@@ -58,8 +58,8 @@ const Portfolio = () => {
   ]);
 
   const [skills] = useState([
-    'JavaScript', 'TypeScript', 'React', 'Vue.js', 'Node.js', 'Python', 'Java',
-    'MongoDB', 'PostgreSQL', 'AWS', 'Docker', 'Git', 'REST APIs', 'GraphQL'
+    'JavaScript', 'React', 'Python', 'Java',
+    'MongoDB', 'MySQL', 'AWS', 'Git', 'REST APIs'
   ]);
 
   const [experience] = useState([
