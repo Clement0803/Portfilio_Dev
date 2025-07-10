@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
-import { Edit3, Github, ExternalLink, Mail, Phone, MapPin, Linkedin, Twitter, Plus, Save, X, Moon, Sun } from 'lucide-react';
+import { Edit3, Github, ExternalLink, Mail, Phone, MapPin, Linkedin, Twitter, Plus, Save, X, Moon, Sun, BookMarked } from 'lucide-react';
+import { personalInfo, projects, skills, experience, socialLinks } from './data/portfolio_const_data';
 
 const Portfolio = () => {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const [editMode, setEditMode] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
+  
+  // Local state for editing (changes won't persist on refresh)
+  const [localPersonalInfo, setLocalPersonalInfo] = useState(personalInfo);
+  const [localProjects, setLocalProjects] = useState(projects);
+  const [localSkills] = useState(skills);
+  const [localExperience] = useState(experience);
+
   const [newProject, setNewProject] = useState({
     title: '',
     description: '',
@@ -14,87 +22,15 @@ const Portfolio = () => {
     image: ''
   });
 
-  const [personalInfo, setPersonalInfo] = useState({
-    name: 'John Doe',
-    title: 'Full Stack Software Engineer',
-    bio: 'Passionate software engineer with 5+ years of experience building scalable web applications. I love creating elegant solutions to complex problems and staying up-to-date with the latest technologies.',
-    email: 'john.doe@email.com',
-    phone: '+1 (555) 123-4567',
-    location: 'San Francisco, CA',
-    linkedin: 'linkedin.com/in/johndoe',
-    twitter: 'twitter.com/johndoe',
-    github: 'github.com/johndoe',
-    profileImage: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face'
-  });
-
-  const [projects, setProjects] = useState([
-    {
-      id: 1,
-      title: 'E-Commerce Platform',
-      description: 'Full-stack e-commerce solution with React, Node.js, and MongoDB. Features include user authentication, payment processing, and admin dashboard.',
-      techStack: ['React', 'Node.js', 'MongoDB', 'Stripe'],
-      liveDemo: 'https://example.com',
-      github: 'https://github.com/johndoe/ecommerce',
-      image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop'
-    },
-    {
-      id: 2,
-      title: 'Task Management App',
-      description: 'Collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.',
-      techStack: ['Vue.js', 'Firebase', 'Vuetify'],
-      liveDemo: 'https://example.com',
-      github: 'https://github.com/johndoe/taskapp',
-      image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=600&h=400&fit=crop'
-    },
-    {
-      id: 3,
-      title: 'Weather Dashboard',
-      description: 'Modern weather application with location-based forecasts, interactive maps, and personalized weather alerts.',
-      techStack: ['React', 'TypeScript', 'OpenWeather API'],
-      liveDemo: 'https://example.com',
-      github: 'https://github.com/johndoe/weather',
-      image: 'https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=600&h=400&fit=crop'
-    }
-  ]);
-
-  const [skills] = useState([
-    'JavaScript', 'React', 'Python', 'Java',
-    'MongoDB', 'MySQL', 'AWS', 'Git', 'REST APIs'
-  ]);
-
-  const [experience] = useState([
-    {
-      id: 1,
-      title: 'Senior Software Engineer',
-      company: 'Tech Solutions Inc.',
-      period: '2021 - Present',
-      description: 'Led development of microservices architecture, mentored junior developers, and improved system performance by 40%.'
-    },
-    {
-      id: 2,
-      title: 'Full Stack Developer',
-      company: 'StartupXYZ',
-      period: '2019 - 2021',
-      description: 'Built scalable web applications using React and Node.js, collaborated with cross-functional teams.'
-    },
-    {
-      id: 3,
-      title: 'Junior Developer',
-      company: 'WebDev Corp',
-      period: '2018 - 2019',
-      description: 'Developed responsive websites and learned modern web development practices.'
-    }
-  ]);
-
   const handlePersonalInfoEdit = (field, value) => {
-    setPersonalInfo(prev => ({ ...prev, [field]: value }));
+    setLocalPersonalInfo(prev => ({ ...prev, [field]: value }));
   };
 
   const handleProjectEdit = (projectId, field, value) => {
     if (field === 'techStack') {
       value = value.split(',').map(tech => tech.trim());
     }
-    setProjects(prev => prev.map(p => 
+    setLocalProjects(prev => prev.map(p => 
       p.id === projectId ? { ...p, [field]: value } : p
     ));
   };
@@ -105,9 +41,10 @@ const Portfolio = () => {
         ...newProject,
         id: Date.now(),
         techStack: newProject.techStack.split(',').map(tech => tech.trim()),
-        image: newProject.image || 'https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=600&h=400&fit=crop'
+        image: newProject.image || 'https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=600&h=400&fit=crop',
+        featured: true
       };
-      setProjects(prev => [...prev, project]);
+      setLocalProjects(prev => [project, ...prev]);
       setNewProject({
         title: '',
         description: '',
@@ -116,24 +53,31 @@ const Portfolio = () => {
         github: '',
         image: ''
       });
+      setEditingProject(null);
     }
   };
 
   const handleDeleteProject = (projectId) => {
-    setProjects(prev => prev.filter(p => p.id !== projectId));
+    if (window.confirm('Are you sure you want to delete this project?')) {
+      setLocalProjects(prev => prev.filter(p => p.id !== projectId));
+    }
   };
 
   const themeClasses = darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900';
   const cardClasses = darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200';
+
+  // Get featured projects - show all if none are specifically marked as featured
+  const featuredProjects = localProjects.filter(project => project.featured);
+  const displayProjects = featuredProjects.length > 0 ? featuredProjects : localProjects;
 
   return (
     <div className={`min-h-screen transition-all duration-300 ${themeClasses}`}>
       {/* Header */}
       <header className="fixed top-0 w-full z-50 backdrop-blur-sm bg-opacity-90 border-b border-gray-200 dark:border-gray-700">
         <div className={`${themeClasses} bg-opacity-90`}>
-          <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+          <div className="w-full px-8 py-4 flex justify-between items-center">
             <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              {personalInfo.name}
+              {localPersonalInfo.name}
             </h1>
             <div className="flex items-center gap-4">
               <button
@@ -151,49 +95,56 @@ const Portfolio = () => {
                 }`}
               >
                 {editMode ? <Save className="w-4 h-4" /> : <Edit3 className="w-4 h-4" />}
-                {editMode ? 'Save Changes' : 'Edit Portfolio'}
+                {editMode ? 'Demo Mode' : 'Edit Demo'}
               </button>
             </div>
           </div>
         </div>
       </header>
 
+      {/* Demo Notice */}
+      {editMode && (
+        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 px-4 py-2 rounded-lg shadow-lg z-40">
+          <p className="text-sm">🎨 Demo Mode: Changes won't be saved (refresh to reset)</p>
+        </div>
+      )}
+
       {/* Hero Section */}
-      <section className="pt-24 pb-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center gap-12">
+      <section className="pt-24 pb-16 px-8">
+        <div className="w-full">
+          <div className="flex flex-col lg:flex-row items-center gap-12 justify-center">
             <div className="lg:w-2/3">
               <div className="space-y-6">
                 {editMode ? (
                   <input
                     type="text"
-                    value={personalInfo.name}
+                    value={localPersonalInfo.name}
                     onChange={(e) => handlePersonalInfoEdit('name', e.target.value)}
                     className={`text-5xl font-bold w-full bg-transparent border-b-2 border-blue-600 focus:outline-none ${themeClasses}`}
                   />
                 ) : (
-                  <h1 className="text-5xl font-bold">{personalInfo.name}</h1>
+                  <h1 className="text-5xl font-bold">{localPersonalInfo.name}</h1>
                 )}
                 
                 {editMode ? (
                   <input
                     type="text"
-                    value={personalInfo.title}
+                    value={localPersonalInfo.title}
                     onChange={(e) => handlePersonalInfoEdit('title', e.target.value)}
                     className={`text-2xl text-gray-600 dark:text-gray-300 w-full bg-transparent border-b border-gray-300 focus:outline-none ${themeClasses}`}
                   />
                 ) : (
-                  <h2 className="text-2xl text-gray-600 dark:text-gray-300">{personalInfo.title}</h2>
+                  <h2 className="text-2xl text-gray-600 dark:text-gray-300">{localPersonalInfo.title}</h2>
                 )}
                 
                 {editMode ? (
                   <textarea
-                    value={personalInfo.bio}
+                    value={localPersonalInfo.bio}
                     onChange={(e) => handlePersonalInfoEdit('bio', e.target.value)}
                     className={`text-lg leading-relaxed w-full h-32 bg-transparent border border-gray-300 rounded-lg p-3 focus:outline-none focus:border-blue-600 ${themeClasses}`}
                   />
                 ) : (
-                  <p className="text-lg leading-relaxed">{personalInfo.bio}</p>
+                  <p className="text-lg leading-relaxed">{localPersonalInfo.bio}</p>
                 )}
                 
                 <div className="flex flex-wrap gap-4">
@@ -202,50 +153,68 @@ const Portfolio = () => {
                     {editMode ? (
                       <input
                         type="email"
-                        value={personalInfo.email}
+                        value={localPersonalInfo.email}
                         onChange={(e) => handlePersonalInfoEdit('email', e.target.value)}
                         className={`bg-transparent border-b border-gray-300 focus:outline-none ${themeClasses}`}
                       />
                     ) : (
-                      <span>{personalInfo.email}</span>
+                      <a href={`mailto:${localPersonalInfo.email}`} className="hover:text-blue-600">
+                        {localPersonalInfo.email}
+                      </a>
                     )}
                   </div>
+
                   <div className="flex items-center gap-2">
                     <Phone className="w-5 h-5 text-blue-600" />
                     {editMode ? (
                       <input
                         type="tel"
-                        value={personalInfo.phone}
+                        value={localPersonalInfo.phone}
                         onChange={(e) => handlePersonalInfoEdit('phone', e.target.value)}
                         className={`bg-transparent border-b border-gray-300 focus:outline-none ${themeClasses}`}
                       />
                     ) : (
-                      <span>{personalInfo.phone}</span>
+                      <span>{localPersonalInfo.phone}</span>
                     )}
                   </div>
+
                   <div className="flex items-center gap-2">
                     <MapPin className="w-5 h-5 text-blue-600" />
                     {editMode ? (
                       <input
                         type="text"
-                        value={personalInfo.location}
+                        value={localPersonalInfo.location}
                         onChange={(e) => handlePersonalInfoEdit('location', e.target.value)}
                         className={`bg-transparent border-b border-gray-300 focus:outline-none ${themeClasses}`}
                       />
                     ) : (
-                      <span>{personalInfo.location}</span>
+                      <span>{localPersonalInfo.location}</span>
+                    )}
+                  </div>
+
+                   <div className="flex items-center gap-2">
+                    <BookMarked className="w-5 h-5 text-blue-600" />
+                    {editMode ? (
+                      <input
+                        type="text"
+                        value={localPersonalInfo.Studies}
+                        onChange={(e) => handlePersonalInfoEdit('Studies', e.target.value)}
+                        className={`bg-transparent border-b border-gray-300 focus:outline-none ${themeClasses}`}
+                      />
+                    ) : (
+                      <span>{localPersonalInfo.Studies}</span>
                     )}
                   </div>
                 </div>
                 
                 <div className="flex gap-4 pt-4">
-                  <a href={`https://${personalInfo.github}`} className="text-gray-600 hover:text-blue-600 transition-colors">
+                  <a href={socialLinks.github} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-600 transition-colors">
                     <Github className="w-6 h-6" />
                   </a>
-                  <a href={`https://${personalInfo.linkedin}`} className="text-gray-600 hover:text-blue-600 transition-colors">
+                  <a href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-600 transition-colors">
                     <Linkedin className="w-6 h-6" />
                   </a>
-                  <a href={`https://${personalInfo.twitter}`} className="text-gray-600 hover:text-blue-600 transition-colors">
+                  <a href={socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-600 transition-colors">
                     <Twitter className="w-6 h-6" />
                   </a>
                 </div>
@@ -255,8 +224,8 @@ const Portfolio = () => {
             <div className="lg:w-1/3">
               <div className="relative">
                 <img
-                  src={personalInfo.profileImage}
-                  alt={personalInfo.name}
+                  src={localPersonalInfo.profileImage}
+                  alt={localPersonalInfo.name}
                   className="w-80 h-80 rounded-2xl object-cover shadow-2xl"
                 />
                 {editMode && (
@@ -264,7 +233,7 @@ const Portfolio = () => {
                     <input
                       type="url"
                       placeholder="Profile image URL"
-                      value={personalInfo.profileImage}
+                      value={localPersonalInfo.profileImage}
                       onChange={(e) => handlePersonalInfoEdit('profileImage', e.target.value)}
                       className={`w-full bg-transparent border border-gray-300 rounded-lg p-2 focus:outline-none focus:border-blue-600 ${themeClasses}`}
                     />
@@ -277,11 +246,11 @@ const Portfolio = () => {
       </section>
 
       {/* Skills Section */}
-      <section className="py-16 px-4">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-16 px-8">
+        <div className="w-full">
           <h2 className="text-3xl font-bold text-center mb-12">Technical Skills</h2>
-          <div className="flex flex-wrap justify-center gap-4">
-            {skills.map((skill, index) => (
+          <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
+            {localSkills.map((skill, index) => (
               <span
                 key={index}
                 className={`px-4 py-2 rounded-full border transition-all duration-300 hover:scale-105 ${cardClasses}`}
@@ -294,9 +263,9 @@ const Portfolio = () => {
       </section>
 
       {/* Projects Section */}
-      <section className="py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-between mb-12">
+      <section className="py-16 px-8">
+        <div className="w-full">
+          <div className="flex items-center justify-between mb-12 max-w-7xl mx-auto">
             <h2 className="text-3xl font-bold">Featured Projects</h2>
             {editMode && (
               <button
@@ -311,7 +280,7 @@ const Portfolio = () => {
           
           {/* Add New Project Form */}
           {editMode && editingProject === 'new' && (
-            <div className={`mb-8 p-6 rounded-xl border ${cardClasses}`}>
+            <div className={`mb-8 p-6 rounded-xl border ${cardClasses} max-w-4xl mx-auto`}>
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xl font-semibold">Add New Project</h3>
                 <button
@@ -355,7 +324,7 @@ const Portfolio = () => {
                   placeholder="Image URL"
                   value={newProject.image}
                   onChange={(e) => setNewProject(prev => ({ ...prev, image: e.target.value }))}
-                  className={`p-3 border rounded-lg focus:outline-none focus:border-blue-600 ${themeClasses}`}
+                  className={`p-3 border rounded-lg focus:outline-none focus:border-blue-600 ${themeClasses} md:col-span-2`}
                 />
               </div>
               <textarea
@@ -373,8 +342,9 @@ const Portfolio = () => {
             </div>
           )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project) => (
+          {/* Projects Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 max-w-7xl mx-auto">
+            {displayProjects.map((project) => (
               <div key={project.id} className={`rounded-xl border overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105 ${cardClasses}`}>
                 <div className="relative">
                   <img
@@ -425,38 +395,57 @@ const Portfolio = () => {
                   </div>
                   
                   <div className="flex gap-4">
-                    <a
-                      href={project.liveDemo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                      Live Demo
-                    </a>
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
-                    >
-                      <Github className="w-4 h-4" />
-                      Code
-                    </a>
+                    {project.liveDemo && (
+                      <a
+                        href={project.liveDemo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                        Live Demo
+                      </a>
+                    )}
+                    {project.github && (
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
+                      >
+                        <Github className="w-4 h-4" />
+                        Code
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
             ))}
           </div>
+
+          {/* Show message if no projects */}
+          {displayProjects.length === 0 && (
+            <div className="text-center py-12 max-w-4xl mx-auto">
+              <p className="text-gray-500 dark:text-gray-400">No projects to display yet.</p>
+              {editMode && (
+                <button
+                  onClick={() => setEditingProject('new')}
+                  className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Add Your First Project
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </section>
 
       {/* Experience Section */}
-      <section className="py-16 px-4">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-16 px-8">
+        <div className="w-full">
           <h2 className="text-3xl font-bold text-center mb-12">Experience</h2>
-          <div className="space-y-8">
-            {experience.map((exp) => (
+          <div className="space-y-8 max-w-4xl mx-auto">
+            {localExperience.map((exp) => (
               <div key={exp.id} className={`p-6 rounded-xl border ${cardClasses}`}>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                   <div>
@@ -473,11 +462,12 @@ const Portfolio = () => {
       </section>
 
       {/* Footer */}
-      <footer className={`py-8 px-4 border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-        <div className="max-w-6xl mx-auto text-center">
+      <footer className={`py-8 px-8 border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+        <div className="w-full text-center max-w-4xl mx-auto">
           <p className="text-gray-600 dark:text-gray-300">
-            © 2025 {personalInfo.name}. Built with React and Tailwind CSS.
+            Copyright © 2025 {localPersonalInfo.name}.
           </p>
+          
         </div>
       </footer>
     </div>
