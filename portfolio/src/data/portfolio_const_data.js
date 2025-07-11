@@ -1,5 +1,8 @@
+import { Instagram } from "lucide-react";
+
 // portfolio/src/data/portfolio_const_data.js
 export const personalInfo = {
+  Head_name: 'Portfolio',
   name: 'Clement Wong Qin Yuan',
   title: 'Fresh Graduate Software Engineer',
   bio: 'Passionate software engineer with 2+ years of experience building scalable web applications and . I love creating elegant solutions to complex problems and staying up-to-date with the latest technologies.',
@@ -7,9 +10,8 @@ export const personalInfo = {
   phone: '+60 10-771-6607',
   location: 'Selangor, Malaysia',
   Studies: 'Bachelor of Engineering in Software Engineering (Honours), Xiamen University Malaysia',
-  linkedin: 'www.linkedin.com/in/clement-wong-703552229',
-  twitter: 'twitter.com/johndoe',
-  github: 'https://github.com/Clement0803',
+  linkedin: 'www.linkedin.com/in/clementwong0803',
+  github: 'github.com/Clement0803',
   profileImage: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face'
 };
 
@@ -78,8 +80,8 @@ export const experience = [
 ];
 
 export const socialLinks = {
-  github: 'https://github.com/johndoe',
-  linkedin: 'https://linkedin.com/in/johndoe',
-  twitter: 'https://twitter.com/johndoe',
-  email: 'mailto:john.doe@email.com'
+  github: 'https://github.com/Clement0803',
+  linkedin: 'www.linkedin.com/in/clementwong0803',
+  Instagram: 'https://twitter.com/johndoe',
+  email: 'clementwong02@icloud.com'
 };
