@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Github, ExternalLink, Mail, Phone, MapPin, Linkedin, Twitter, BookMarked, Menu, X, ChevronDown } from 'lucide-react';
+import { Github, ExternalLink, Mail, Phone, MapPin, Linkedin, Twitter, BookMarked, Menu, X, ChevronDown, FileUserIcon} from 'lucide-react';
 import { personalInfo, projects, skills, experience, socialLinks } from './data/portfolio_const_data';
 
 const Portfolio = () => {
@@ -99,7 +99,7 @@ const Portfolio = () => {
               <div className="space-y-6">
                 <h1 className="text-5xl font-bold">{personalInfo.name}</h1>
                 <h2 className="text-2xl text-gray-300">{personalInfo.title}</h2>
-                <p className="text-lg leading-relaxed">
+                <p className="text-xl leading-relaxed text-gray-200 font-serif">
                   Fresh graduate Software Engineer with a passion for innovation and technology. I specialize in machine learning, 
                   web development, and software testing, bringing a comprehensive approach to solving complex technical challenges. 
                   During my university journey, I've leveraged AI and machine learning to create innovative solutions that push the 
@@ -107,24 +107,24 @@ const Portfolio = () => {
                 </p>
                 
                 <div className="flex flex-wrap gap-6">
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 text-xl">
                     <Mail className="w-5 h-5 text-blue-600" />
                     <a href={`mailto:${personalInfo.email}`} className="hover:text-blue-600">
                       {personalInfo.email}
                     </a>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 text-xl">
                     <Phone className="w-5 h-5 text-blue-600" />
                     <span>{personalInfo.phone}</span>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 text-xl">
                     <MapPin className="w-5 h-5 text-blue-600" />
                     <span>{personalInfo.location}</span>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 text-lg">
                     <BookMarked className="w-5 h-5 text-blue-600" />
                     <span>{personalInfo.Studies}</span>
                   </div>
@@ -160,24 +160,24 @@ const Portfolio = () => {
       {/* About Section */}
       <section id="about" className="py-16 px-8">
         <div className="max-w-6xl mx-auto rounded-2xl bg-gray-700 p-10 shadow-lg">
-          <h2 className="text-3xl font-bold text-center mb-12">About Me</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">~About Me~</h2>
           <div className="max-w-3xl mx-auto text-center space-y-6">
-            <p className="text-lg leading-relaxed text-gray-300">
+            <p className="text-lg leading-relaxed text-gray-200 font-serif">
               As a fresh graduate in Software Engineering, I'm passionate about exploring the intersection of technology and innovation. 
-              My primary interests lie in machine learning, web development, and software testing, where I enjoy creating robust 
+              My primary interests lie in Machine Learning, Web Development, and Software Testing, where I enjoy creating robust 
               solutions that make a real impact.
             </p>
-            <p className="text-lg leading-relaxed text-gray-300">
+            <p className="text-lg leading-relaxed text-gray-200 font-serif">
               During my final year project and internship period, I had the opportunity to work extensively with AI and machine learning 
               technologies, developing innovative projects that showcase the potential of intelligent systems. These experiences have 
               strengthened my belief in technology's power to solve real-world problems.
             </p>
-            <p className="text-lg leading-relaxed text-gray-300">
+            <p className="text-lg leading-relaxed text-gray-200 font-serif">
               Beyond coding, I'm an avid badminton player who loves the strategic thinking the sport demands. I also enjoy natural 
               adventures that help me stay connected with the outdoors, and I've discovered a passion for creating new desserts at home - 
               it's my creative outlet that combines precision with experimentation, much like programming!
             </p>
-            <p className="text-lg leading-relaxed text-gray-300">
+            <p className="text-lg leading-relaxed text-gray-200 font-serif">
               In my free time, you'll find me learning new technologies and exploring different domains of knowledge. I believe that 
               continuous learning is essential in our rapidly evolving tech landscape, and I'm always excited to dive into emerging 
               trends and tools that can enhance my development skills.
@@ -255,7 +255,7 @@ const Portfolio = () => {
                         className="flex items-center gap-2 text-gray-300 rounded-2xl border overflow-hidden px-4 hover:text-white transition-colors"
                       >
                         <Github className="w-4 h-4" />
-                        Code
+                        Github
                       </a>
                     )}
                   </div>
@@ -314,6 +314,7 @@ const Portfolio = () => {
           <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
             I'm always open to discussing new opportunities, interesting projects, or just having a chat about technology.
           </p>
+
           <div className="flex justify-center gap-6">
             <a
               href={`mailto:${personalInfo.email}`}
@@ -322,15 +323,27 @@ const Portfolio = () => {
               <Mail className="w-5 h-5" />
               Send Email
             </a>
+
             <a
-              href={`https://${personalInfo.linkedin}`}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={`https://${socialLinks.linkedin}`}
+              target="_blank" //Opens the link in a new tab or window
+              rel="noopener noreferrer" //Improves security by preventing the new page from accessing the original page's window object
               className="flex items-center gap-2 px-6 py-3 rounded-lg border border-gray-600 text-gray-300 hover:bg-gray-700 transition-colors"
             >
               <Linkedin className="w-5 h-5" />
               LinkedIn
             </a>
+
+             <a
+              href={"/public/resume.pdf"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-6 py-3 rounded-lg border border-gray-600 text-gray-300 hover:bg-gray-700 transition-colors"
+            >
+              <FileUserIcon className="w-5 h-5" />
+              Resume
+            </a>
+
           </div>
         </div>
       </section>

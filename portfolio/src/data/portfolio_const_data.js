@@ -5,7 +5,6 @@ export const personalInfo = {
   Head_name: 'Portfolio',
   name: 'Clement Wong Qin Yuan',
   title: 'Fresh Graduate Software Engineer',
-  bio: 'Passionate software engineer with 2+ years of experience building scalable web applications and . I love creating elegant solutions to complex problems and staying up-to-date with the latest technologies.',
   email: 'clementwong02@icloud.com',
   phone: '+60 10-771-6607',
   location: 'Selangor, Malaysia',
@@ -45,6 +44,16 @@ export const projects = [
     github: 'https://github.com/johndoe/weather',
     image: 'https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=600&h=400&fit=crop',
     featured: true
+  },
+  {
+    id: 4,
+    title: 'Portfolio Website',
+    description: 'Personal portfolio website showcasing projects, skills, and experience. Built with React and styled-components.',
+    techStack: ['React', 'JavaScript', 'Styled-components'],
+    liveDemo: 'https://example.com',
+    github: 'https://github.com/Clement0803/Portfilio_Dev',
+    image: '/public/web_portfolio.jpg',
+    featured: true
   }
 ];
 
@@ -55,18 +64,18 @@ export const skills = [
 export const experience = [
   {
     id: 1,
-    title: 'Senior Software Engineer',
-    company: 'Tech Solutions Inc.',
-    period: '2021 - Present',
-    description: 'Led development of microservices architecture, mentored junior developers, and improved system performance by 40%.',
+    title: 'Intern Software Engineer',
+    company: 'Continental Tyres',
+    period: '2025 - Present',
+    description: 'Focus on developing machine learning models for predictive maintenance, enhancing system performance and reliability. And collaborate with cross-functional teams to integrate AI solutions into existing systems. Also include software testing and debugging to ensure high-quality deliverables and SAP integration for data management.',
     current: true
   },
   {
     id: 2,
-    title: 'Full Stack Developer',
-    company: 'StartupXYZ',
-    period: '2019 - 2021',
-    description: 'Built scalable web applications using React and Node.js, collaborated with cross-functional teams.',
+    title: 'Volunteer Medical Vaccination Assistant',
+    company: 'KPJ Healthcare Sibu',
+    period: '2021/07 - 2021/09',
+    description: 'Vaccination assistant, responsible for managing patient flow, preparing vaccination materials, and ensuring a smooth vaccination process. Assisted healthcare professionals in administering vaccines and provided post-vaccination care and monitoring. Also help in data entry and record keeping to maintain accurate vaccination records.',
     current: false
   },
   {
@@ -76,7 +85,8 @@ export const experience = [
     period: '2018 - 2019',
     description: 'Developed responsive websites and learned modern web development practices.',
     current: false
-  }
+  },
+  
 ];
 
 export const socialLinks = {
