@@ -11,7 +11,7 @@ export const personalInfo = {
   Studies: 'Bachelor of Engineering in Software Engineering (Honours), Xiamen University Malaysia',
   linkedin: 'www.linkedin.com/in/clementwong0803',
   github: 'github.com/Clement0803',
-  profileImage: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face'
+  profileImage: 'src/assets/WAN_8840.jpeg'
 };
 
 export const projects = [
@@ -52,7 +52,7 @@ export const projects = [
     techStack: ['React', 'JavaScript', 'Styled-components'],
     liveDemo: 'https://example.com',
     github: 'https://github.com/Clement0803/Portfilio_Dev',
-    image: '/public/web_portfolio.jpg',
+    image: '/src/assets/web_portfolio.jpg',
     featured: true
   }
 ];
@@ -72,6 +72,22 @@ export const experience = [
   },
   {
     id: 2,
+    title: 'AI-Based Left-Behind Child Presence Detection System (Final Year Project)',
+    company: 'Xiamen University Malaysia',
+    period: '03/2024 - 12/2024',
+    description: ' Developed a real-time object detection system using computer vision to identify children or adults left inside vehicles. Used Python and YOLO-based object detection models integrated with a camera system for automatic safety alerts. Implemented image processing, detection logic, and alert notifications to prevent critical incidents. Integrated hardware (IoT camera) and backend system with a mobile notification app to demonstrate real-world use cases.', 
+    current: true
+  },
+   {
+    id: 3,
+    title: ' Full-Stack Developer for Web Application and Mobile Application',
+    company: 'Xiamen University Malaysia',
+    period: ' 04/2023 - 02/2024',
+    description: 'Designed and developed a full-stack web application using HTML, CSS, JavaScript, and SQL. Built and connected a backend database for managing user profiles, feedback, and content posting. Gained hands-on experience in frontend-backend integration and database management. Developed a mobile travel application for Android using Java and XML, enabling users to create personalized travel itineraries.Integrated map features, location-based suggestions, and a clean navigation UI for optimal user experience. Worked with local storage and structured data handling to save and retrieve user preferences',
+    current: false
+  },
+  {
+    id: 4,
     title: 'Volunteer Medical Vaccination Assistant',
     company: 'KPJ Healthcare Sibu',
     period: '2021/07 - 2021/09',
@@ -79,7 +95,7 @@ export const experience = [
     current: false
   },
   {
-    id: 3,
+    id: 5,
     title: 'Junior Developer',
     company: 'WebDev Corp',
     period: '2018 - 2019',
